@@ -1,7 +1,8 @@
 #!/bin/sh
 set -eu
 # Linux amd64; verified upstream artifacts, installed outside the checkout.
-TOOLS_DIR=${TOOLS_DIR:-/workspace/tooling/bin}
+TOOLING_ROOT=${TOOLING_ROOT:-/workspace/tooling}
+TOOLS_DIR=${TOOLS_DIR:-$TOOLING_ROOT/bin}
 mkdir -p "$TOOLS_DIR"
 TASK_TMP=$(mktemp -d)
 trap 'rm -rf "$TASK_TMP"' EXIT HUP INT TERM
@@ -24,8 +25,8 @@ with tarfile.open(root/'tfsec.tar.gz') as archive:
 for name in ('terraform','tfsec'):
     (target/name).chmod(0o755)
 PY
-python -m venv /workspace/tooling/venv
-/workspace/tooling/venv/bin/python -m pip install -r tests/requirements.txt
+python -m venv "$TOOLING_ROOT/venv"
+"$TOOLING_ROOT/venv/bin/python" -m pip install -r tests/requirements.txt
 export PATH="$TOOLS_DIR:$PATH"
 terraform -chdir=infra init -backend=false -lockfile=readonly
 terraform -chdir=bootstrap init -backend=false -lockfile=readonly

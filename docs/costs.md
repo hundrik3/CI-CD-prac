@@ -1,5 +1,11 @@
 # Cost estimate and approval boundary
 
+## Free default
+
+The public GitHub repository uses standard GitHub-hosted Linux runners for credential-free checks. The workflow makes no AWS resource calls and uses no paid/larger runners. AWS deployment is optional and disabled by omission from GitHub Actions. Review GitHub allowances before making the repository private or changing runner types.
+
+## Optional AWS deployment
+
 No AWS resources have been created. Provisioning requires explicit owner approval and configured temporary AWS authentication.
 
 Illustrative us-east-1 Linux on-demand estimate, without Free Tier, credits or taxes:
