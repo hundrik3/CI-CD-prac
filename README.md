@@ -4,7 +4,7 @@
 
 A portfolio implementation of [DevCloudNinjas project 26](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-26-terraform-gitlab-cicd). Terraform provisions an AWS network and an SSM-managed EC2 instance; GitLab CI validates, scans, plans, and offers manual apply and destroy jobs.
 
-**Status:** implemented and locally tested; AWS deployment and a hosted GitLab pipeline are not verified. See [validation evidence](docs/validation.md). No AWS resources were created during implementation.
+**Status:** local checks and [GitHub-hosted CI](https://github.com/hundrik3/CI-CD-prac/actions/runs/37472609991) passed. AWS deployment and a hosted GitLab pipeline are not verified. See [validation evidence](docs/validation.md). No AWS resources were created during implementation.
 
 ## Free portfolio workflow
 

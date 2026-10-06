@@ -27,7 +27,7 @@ GitHub Actions proves the parts that can run without AWS: initialization with `-
 
 [Validation evidence](validation.md) distinguishes local results, the hosted GitHub run and checks that were not performed. The [Actions page](https://github.com/hundrik3/CI-CD-prac/actions/workflows/validate.yml) exposes actual runner logs and commit-specific outcomes; a badge is not evidence of AWS deployment.
 
-Local verification has passed both Terraform configurations, five mock test runs and three pipeline tests. No EC2 instance or state backend was created. SSM connectivity, AWS permissions, real lifecycle cleanup, hosted GitLab execution and OpenTofu compatibility remain unverified. These limits are deliberate and visible.
+Local verification has passed both Terraform configurations, five mock test runs and three pipeline tests. The [first GitHub-hosted run](https://github.com/hundrik3/CI-CD-prac/actions/runs/37472609991) also completed successfully for commit `9d57950`, including all validation and security-gate steps. No EC2 instance or state backend was created. SSM connectivity, AWS permissions, real lifecycle cleanup, hosted GitLab execution and OpenTofu compatibility remain unverified. These limits are deliberate and visible.
 
 ## What this demonstrates
 

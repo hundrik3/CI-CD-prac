@@ -13,7 +13,7 @@ Executed in the CI/CD prac cloud environment on 2026-10-06. These results descri
 | Terraform mock tests | Passed | 5 runs passed, 0 failed: network ingress/egress, disk encryption and IMDSv2, root plan, invalid name, expensive instance rejection |
 | Pipeline structure tests | Passed | 3 Python unittest tests; manual gates, saved-plan dependency, protected branch and OIDC audience |
 | GitHub Actions definition | Passed locally | actionlint 1.7.7, exit 0; official action revisions confirmed |
-| GitHub hosted CI | Pending first push | Results will be linked after the runner completes; no success claimed yet |
+| GitHub hosted CI | Passed | [Run 37472609991](https://github.com/hundrik3/CI-CD-prac/actions/runs/37472609991), commit `9d57950f27c977fe15e981187764a815b81eba80`; all check steps completed successfully |
 | Shell syntax | Passed | Both shell scripts parsed with `sh -n` |
 | tfsec HIGH/CRITICAL gate | Passed with accepted exception | Both directories exit 0; one documented public HTTPS egress exception |
 | Full tfsec scan | Findings remain | Infra: 1 medium (VPC flow logs); bootstrap: 2 medium (S3 access logging, DynamoDB PITR). Full scans exit 1, not counted as passing |
@@ -33,4 +33,4 @@ Medium findings are retained visibly to avoid adding logging/storage services to
 
 The public repository runs `.github/workflows/validate.yml` on standard Ubuntu runners. It uses read-only repository permissions, no AWS/OIDC credentials and no deployment commands. Its installer supports a custom `TOOLING_ROOT` rather than requiring `/workspace`, and has been exercised locally in a separate temporary tool directory.
 
-The hosted result must be read from the specific GitHub run, not inferred from local tests. GitLab hosting and live AWS checks remain unrun.
+The first hosted workflow completed successfully: [run 37472609991](https://github.com/hundrik3/CI-CD-prac/actions/runs/37472609991) for commit `9d57950f27c977fe15e981187764a815b81eba80`. GitHub reported every step completed successfully, including verified installation, configuration validation, mock infrastructure tests, pipeline tests, shell syntax and the security gate. This result was read from the run and job APIs, not inferred from local tests. GitLab hosting and live AWS checks remain unrun.
