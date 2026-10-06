@@ -1,0 +1,63 @@
+image:
+  name: hashicorp/terraform:1.11.4
+  entrypoint: [""]
+stages: [validate, security, plan, apply, destroy]
+variables:
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  AWS_REGION: us-east-1
+  TF_VAR_region: us-east-1
+validate:
+  stage: validate
+  script:
+    - terraform fmt -check -recursive
+    - terraform -chdir=infra init -backend=false -lockfile=readonly
+    - terraform -chdir=infra validate
+    - terraform -chdir=infra test
+    - terraform -chdir=bootstrap init -backend=false -lockfile=readonly
+    - terraform -chdir=bootstrap validate
+security:
+  stage: security
+  image:
+    name: aquasec/tfsec:v1.28.14
+    entrypoint: [""]
+  script:
+    - tfsec infra --minimum-severity HIGH
+    - tfsec bootstrap --minimum-severity HIGH
+.cloud:
+  id_tokens:
+    GITLAB_OIDC_TOKEN:
+      aud: sts.amazonaws.com
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"'
+plan:
+  extends: .cloud
+  stage: plan
+  resource_group: project26
+  script:
+    - sh scripts/ci-init.sh plan -input=false -out=deployment.tfplan
+  artifacts:
+    access: maintainer
+    expire_in: 1 day
+    paths: [infra/deployment.tfplan]
+apply:
+  extends: .cloud
+  stage: apply
+  resource_group: project26
+  needs: [plan]
+  when: manual
+  allow_failure: false
+  environment: aws-lab
+  script:
+    - sh scripts/ci-init.sh apply -input=false deployment.tfplan
+destroy:
+  extends: .cloud
+  stage: destroy
+  resource_group: project26
+  needs: [validate, security]
+  when: manual
+  environment:
+    name: aws-lab
+    action: stop
+  script:
+    - sh scripts/ci-init.sh destroy -input=false -auto-approve
