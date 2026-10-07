@@ -20,6 +20,7 @@ validate: unit
 	kubectl kustomize deploy/overlays/local > /dev/null
 
 compose-up:
+	chmod -R a+rX observability
 	docker compose up -d --build
 
 compose-check:
@@ -29,6 +30,7 @@ compose-down:
 	docker compose down --volumes --remove-orphans
 
 gitops-up:
+	chmod -R a+rX observability
 	docker compose build app
 	python scripts/gitops-up.py
 

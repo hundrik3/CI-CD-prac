@@ -1,0 +1,93 @@
+{
+  "compose": {
+    "checked_at": "2026-10-07T09:14:16.976667+00:00",
+    "app": "http://127.0.0.1:8080",
+    "trace_id": "e8906671ab45870765aef1ac014a7174",
+    "error_metric": [
+      {
+        "metric": {},
+        "value": [
+          1791364456.91,
+          "12"
+        ]
+      }
+    ],
+    "checks": [
+      "health",
+      "bounded input",
+      "150ms work",
+      "HTTP 500",
+      "metrics",
+      "Tempo trace",
+      "Loki correlated log",
+      "Prometheus firing alert",
+      "Grafana dashboard"
+    ]
+  },
+  "kubernetes": {
+    "checked_at": "2026-10-07T09:25:33.228247+00:00",
+    "app": "http://127.0.0.1:8081",
+    "trace_id": "4232e8cccae2113a3c8fcca2e6e278d3",
+    "error_metric": [
+      {
+        "metric": {},
+        "value": [
+          1791365131.15,
+          "6"
+        ]
+      }
+    ],
+    "checks": [
+      "health",
+      "bounded input",
+      "150ms work",
+      "HTTP 500",
+      "metrics",
+      "Tempo trace",
+      "Loki correlated log",
+      "Prometheus firing alert",
+      "Grafana dashboard"
+    ]
+  },
+  "gitops": {
+    "sync": {
+      "comparedTo": {
+        "destination": {
+          "namespace": "portfolio",
+          "server": "https://kubernetes.default.svc"
+        },
+        "source": {
+          "path": "deploy/overlays/local",
+          "repoURL": "https://github.com/hundrik3/CI-CD-prac.git",
+          "targetRevision": "main"
+        }
+      },
+      "revision": "465884108cc537ea7acbe90ae65183a3343690f0",
+      "status": "Synced"
+    },
+    "health": {
+      "lastTransitionTime": "2026-10-07T09:25:20Z",
+      "status": "Healthy"
+    },
+    "replica_drift_healed": true
+  },
+  "release": {
+    "promoted_commit": "28e7ad9e03f4b2d5741e91d503944495ec88ab43",
+    "observed_version": "v2",
+    "status": "Synced/Healthy",
+    "reverted_commit": "66ca60646a1bbd90505bc2901c6632cc0949582b",
+    "observed_reverted_version": "v1",
+    "revert_status": "Synced/Healthy"
+  },
+  "application_scan": {
+    "tool": "Trivy 0.75.0",
+    "artifact": "portfolio-api:v1",
+    "severity_filter": [
+      "HIGH",
+      "CRITICAL"
+    ],
+    "ignore_unfixed": false,
+    "vulnerability_count": 0,
+    "secret_count": 0
+  }
+}

@@ -2,7 +2,31 @@ name: Application and local platform
 on:
   push:
     branches: [main]
+    paths:
+      - "app/**"
+      - "scripts/**"
+      - "platform/**"
+      - "deploy/**"
+      - "observability/**"
+      - "security/**"
+      - "tests/**"
+      - "Makefile"
+      - "compose*.yaml"
+      - ".gitignore"
+      - ".github/workflows/application.yml"
   pull_request:
+    paths:
+      - "app/**"
+      - "scripts/**"
+      - "platform/**"
+      - "deploy/**"
+      - "observability/**"
+      - "security/**"
+      - "tests/**"
+      - "Makefile"
+      - "compose*.yaml"
+      - ".gitignore"
+      - ".github/workflows/application.yml"
   workflow_dispatch:
 permissions:
   contents: read

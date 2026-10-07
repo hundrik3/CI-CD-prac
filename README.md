@@ -8,6 +8,7 @@ A local DevOps portfolio platform that connects a Python API, Docker, Kubernetes
 ## What to inspect
 
 - [Architecture and decisions](docs/architecture.md): how the components connect and why.
+- [Code review](docs/code-review.md): corrections and accepted limitations.
 - [Local runbook](docs/local-runbook.md): setup, tests, GitOps, troubleshooting and complete cleanup.
 - [Platform validation](docs/platform-validation.md): actual outcomes, reproducible checks and limits.
 - [Security and signatures](security/README.md): scanner policy, SBOM and signed image-manifest verification.
@@ -27,7 +28,7 @@ flowchart LR
     API -->|OTLP traces and logs| Collector[OpenTelemetry Collector]
     Collector --> Tempo[Tempo traces]
     Collector --> Loki[Loki logs]
-    Collector -->|Scrapes API metrics| Prom[Prometheus and error alert]
+    Collector -->|Exported metrics| Prom[Prometheus and error alert]
     Prom --> Grafana[Grafana dashboard]
     Tempo --> Grafana
     Loki --> Grafana
