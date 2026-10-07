@@ -1,0 +1,28 @@
+Run: https://github.com/hundrik3/CI-CD-prac/actions/runs/37601631088
+Source: f28bf350518833a901352a8455a60c94ec812bf1
+Scope: selected actual runner stdout/stderr; timestamps are UTC.
+
+2026-10-07T09:36:04.9123068Z Ran 4 tests in 0.192s
+2026-10-07T09:36:04.9974938Z Ran 3 tests in 0.003s
+2026-10-07T09:36:33.5774873Z app health: PASS
+2026-10-07T09:36:43.5946122Z fresh error metric baseline: PASS
+2026-10-07T09:36:49.7617475Z request metrics: PASS
+2026-10-07T09:36:49.7663034Z trace lookup: PASS
+2026-10-07T09:36:49.7739986Z correlated logs: PASS
+2026-10-07T09:36:51.7763915Z firing error alert: PASS
+2026-10-07T09:36:51.7899981Z provisioned Grafana dashboard: PASS
+2026-10-07T09:36:51.7902454Z All functional observability checks passed.
+2026-10-07T09:38:41.5738899Z ArgoCD Synced and Healthy at the selected revision: PASS
+2026-10-07T09:38:44.7648425Z replica drift healed to one: PASS
+2026-10-07T09:38:44.8708034Z app health: PASS
+2026-10-07T09:38:48.8826579Z fresh error metric baseline: PASS
+2026-10-07T09:38:53.0477706Z request metrics: PASS
+2026-10-07T09:38:53.0525190Z trace lookup: PASS
+2026-10-07T09:38:53.0609890Z correlated logs: PASS
+2026-10-07T09:38:57.0642704Z firing error alert: PASS
+2026-10-07T09:38:57.0802263Z provisioned Grafana dashboard: PASS
+2026-10-07T09:38:57.0805023Z All functional observability checks passed.
+2026-10-07T09:39:23.8888096Z Verified OK
+2026-10-07T09:39:24.0888899Z Error: failed to verify signature: could not verify message: invalid signature when validating ASN.1 encoded signature
+2026-10-07T09:39:24.0891594Z error during command execution: failed to verify signature: could not verify message: invalid signature when validating ASN.1 encoded signature
+2026-10-07T09:39:24.0897512Z PASS: tampered manifest rejected

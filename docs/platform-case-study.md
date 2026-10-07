@@ -18,6 +18,6 @@ The API exposes health, bounded work and controlled error routes. It is packaged
 
 ## Evidence and limits
 
-See platform-validation.md for the final executed outcomes and hosted run links. AWS is unused; registry image promotion, production HA and security scanning of every platform component are not claimed. The Terraform/GitLab lab is preserved and separately documented.
+The [successful hosted run](https://github.com/hundrik3/CI-CD-prac/actions/runs/37601631088) confirms a fresh platform bootstrap, end-to-end telemetry, GitOps self-healing, image scanning, SBOM and signature verification. Locally, Git promotion to v2 and ordinary revert to v1 were both confirmed through application responses and ArgoCD revisions. See platform-validation.md for the complete executed outcomes and limits. AWS is unused; registry image promotion, production HA and security scanning of every platform component are not claimed. The Terraform/GitLab lab is preserved and separately documented.
 
 The project demonstrates modular infrastructure, application packaging, Git-driven reconciliation, operational diagnosis, negative testing, telemetry correlation and signed evidence. It includes reproducible failure and cleanup procedures rather than only configuration files.

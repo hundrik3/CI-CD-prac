@@ -89,5 +89,16 @@
     "ignore_unfixed": false,
     "vulnerability_count": 0,
     "secret_count": 0
+  },
+  "cleanup": {
+    "compose_containers_remaining": 0,
+    "kind_clusters_remaining": 0,
+    "dedicated_network_removed": true,
+    "tools_and_images_retained": true
+  },
+  "sbom": {
+    "format": "SPDX JSON",
+    "tool": "Syft 1.54.1",
+    "package_count": 78
   }
 }

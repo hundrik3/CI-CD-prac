@@ -11,7 +11,7 @@ Review date: 2026-10-07. Scope: application, Dockerfile, dependency locks, Compo
 - The scanner is an unsuppressed HIGH/CRITICAL and secret gate; a vulnerable Debian base was replaced and the resulting actual Alpine image rescanned.
 - Runtime collector endpoints are discovered from the dedicated Docker network, not hardcoded to an environment-specific IP in Git.
 - CI signs only after the read-only application job passes. Signing permissions are restricted to a separate trusted-main job. Verification checks the exact issuer and workflow identity, and altered content must fail verification.
-- Manifest generation refuses dirty source trees, preventing a signed record from falsely attributing uncommitted source to HEAD.
+- Manifest generation refuses dirty source trees, preventing a signed record from falsely attributing uncommitted source to HEAD. The refusal was exercised locally; hosted signing verified the clean source record and rejected tampering.
 - Cleanup names only this project's resources and does not run global Docker pruning. Kubeconfig and generated records are ignored by Git.
 - Fresh Applications can have no status until the first controller reconciliation. The checker now treats that as pending and additionally verifies the requested Git revision.
 - End-to-end metrics checks wait for a fresh baseline, so an old scrape cannot masquerade as a successful new error exercise.
