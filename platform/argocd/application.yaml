@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: portfolio
+  namespace: argocd
+spec:
+  sourceRepos: ["https://github.com/hundrik3/CI-CD-prac.git"]
+  destinations:
+    - namespace: portfolio
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: portfolio
+  namespace: argocd
+spec:
+  project: portfolio
+  source:
+    repoURL: https://github.com/hundrik3/CI-CD-prac.git
+    targetRevision: main
+    path: deploy/overlays/local
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: portfolio
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions: [CreateNamespace=true]

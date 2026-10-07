@@ -1,0 +1,13 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30080
+        hostPort: 8081
+        listenAddress: 127.0.0.1
+        protocol: TCP
+    extraMounts:
+      - hostPath: /etc/ssl/certs/ca-certificates.crt
+        containerPath: /etc/ssl/certs/ca-certificates.crt
+        readOnly: true

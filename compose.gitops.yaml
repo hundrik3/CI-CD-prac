@@ -1,0 +1,14 @@
+# Connect the Compose observability stack to the Kind app on a local IPv4 bridge.
+services:
+  app:
+    profiles: [standalone]
+  otel-collector:
+    networks: [default, kind]
+    environment:
+      APP_SCRAPE_TARGET: portfolio-control-plane:30080
+      NO_PROXY: "portfolio-control-plane,tempo,loki,localhost,127.0.0.1"
+      no_proxy: "portfolio-control-plane,tempo,loki,localhost,127.0.0.1"
+networks:
+  kind:
+    external: true
+    name: portfolio-kind

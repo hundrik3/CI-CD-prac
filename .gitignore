@@ -8,3 +8,6 @@
 .env
 .venv/
 __pycache__/
+
+/.local/
+/evidence/generated/

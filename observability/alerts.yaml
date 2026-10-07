@@ -1,0 +1,10 @@
+groups:
+  - name: portfolio
+    rules:
+      - alert: PortfolioErrors
+        expr: sum(increase(portfolio_requests_total{status="500"}[2m])) > 2
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Intentional or unexpected API errors detected

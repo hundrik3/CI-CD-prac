@@ -1,72 +1,72 @@
-# AWS Infrastructure Delivery with Terraform and GitLab CI/CD
+# Observable GitOps Delivery Platform
 
-[![Free infrastructure checks](https://github.com/hundrik3/CI-CD-prac/actions/workflows/validate.yml/badge.svg)](https://github.com/hundrik3/CI-CD-prac/actions/workflows/validate.yml)
+[![Application and local platform](https://github.com/hundrik3/CI-CD-prac/actions/workflows/application.yml/badge.svg)](https://github.com/hundrik3/CI-CD-prac/actions/workflows/application.yml)
+[![Terraform checks](https://github.com/hundrik3/CI-CD-prac/actions/workflows/validate.yml/badge.svg)](https://github.com/hundrik3/CI-CD-prac/actions/workflows/validate.yml)
 
-A portfolio implementation of [DevCloudNinjas project 26](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-26-terraform-gitlab-cicd). Terraform provisions an AWS network and an SSM-managed EC2 instance; GitLab CI validates, scans, plans, and offers manual apply and destroy jobs.
+A local DevOps portfolio platform that connects a Python API, Docker, Kubernetes/ArgoCD, OpenTelemetry observability and supply-chain verification. It runs without AWS, a paid cluster or permanent access keys. The existing Terraform/GitLab AWS lab remains available as a separate, optional infrastructure exercise.
 
-**Status:** local checks and [GitHub-hosted CI](https://github.com/hundrik3/CI-CD-prac/actions/runs/37472609991) passed. AWS deployment and a hosted GitLab pipeline are not verified. See [validation evidence](docs/validation.md). No AWS resources were created during implementation.
+## What to inspect
 
-## Free portfolio workflow
-
-The [GitHub Actions workflow](.github/workflows/validate.yml) runs on pushes to `main`, pull requests and manual dispatch. It uses standard hosted Linux runners in this public repository, read-only permissions and no AWS credentials. It validates both Terraform configurations, runs mock-plan tests and GitLab pipeline-control tests, and enforces the documented security gate. It never deploys AWS resources.
-
-Read the [case study](docs/case-study.md) for the problem, decisions and verified scope. Actual GitHub runner results are available from the badge above; local test success alone does not prove a hosted run passed. The GitLab delivery pipeline is retained to implement the original assignment.
-
-```mermaid
-flowchart LR
-    Commit[Push or pull request] --> CI[GitHub Actions: free public Linux runner]
-    CI --> Init[Verified tools and backend-free initialization]
-    Init --> Checks[Validate, mock tests, pipeline tests, tfsec]
-    Checks --> Evidence[Runner logs and commit status]
-```
+- [Architecture and decisions](docs/architecture.md): how the components connect and why.
+- [Local runbook](docs/local-runbook.md): setup, tests, GitOps, troubleshooting and complete cleanup.
+- [Platform validation](docs/platform-validation.md): actual outcomes, reproducible checks and limits.
+- [Security and signatures](security/README.md): scanner policy, SBOM and signed image-manifest verification.
+- [Case study](docs/platform-case-study.md): the engineering problem, implementation and failure investigation.
+- [Original Terraform project](docs/terraform.md): preserved IaC, backend bootstrap and GitLab delivery pipeline.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    Developer --> GitLab[GitLab protected default branch]
-    GitLab --> Validate[Format and validate]
-    Validate --> Scan[tfsec security gate]
-    Scan --> Plan[Terraform plan]
-    Plan --> Approval[Manual apply]
-    GitLab --> OIDC[Temporary AWS credentials via OIDC]
-    OIDC --> AWS
-    Approval --> AWS
-    subgraph AWS
-      State[S3 encrypted versioned state] --- Lock[DynamoDB state lock]
-      subgraph VPC
-        IGW[Internet gateway] --> Subnet[Public routed subnet]
-        Subnet --> EC2[EC2 t3.micro - encrypted gp3 - IMDSv2]
-        SG[Security group: no ingress, HTTPS egress] --- EC2
-      end
-      EC2 --> SSM[Systems Manager]
-    end
+    Git[Public GitHub repository] --> CI[GitHub Actions]
+    CI --> Tests[API and infrastructure tests]
+    CI --> Scan[Trivy and SBOM]
+    Scan --> Sign[Keyless signed image manifest]
+    Git --> Argo[ArgoCD Core]
+    Argo --> API[Python API in Kind]
+    API -->|OTLP traces and logs| Collector[OpenTelemetry Collector]
+    Collector --> Tempo[Tempo traces]
+    Collector --> Loki[Loki logs]
+    Collector -->|Scrapes API metrics| Prom[Prometheus and error alert]
+    Prom --> Grafana[Grafana dashboard]
+    Tempo --> Grafana
+    Loki --> Grafana
 ```
 
-The instance uses a public IPv4 for outbound SSM connectivity but accepts no inbound connections. No SSH, load balancer, NAT Gateway, application, or Kubernetes cluster is needed for this infrastructure-delivery lab.
+ArgoCD manages the app's deployment and services from Git. The observability services run in Docker Compose and connect to Kind across an IPv4 bridge. A generated runtime Endpoints object discovers the collector IP; it is not a secret or a Git-controlled cloud resource. The application image is built locally and loaded into Kind, so no registry account is needed. This demonstrates GitOps configuration delivery, not automatic promotion from a production registry.
 
-## Local checks
+## Quick start: Linux amd64
 
-Required: Terraform 1.11.4, tfsec 1.28.14, Python 3 with PyYAML; AWS CLI 1.38.38 for live checks.
-
-From this checkout, run `sh scripts/install-tools.sh`, then `export PATH="/workspace/tooling/bin:/workspace/tooling/venv/bin:$PATH"`. The installer targets Linux amd64 and verifies upstream checksums. The AWS provider is pinned through committed dependency lockfiles.
+Requirements: Docker with Compose, Python 3.12, curl, Make and approximately 6 GiB available RAM. A nested Docker environment using native snapshots may require substantially more disk than a normal Linux host; see the runbook.
 
 ```sh
-terraform fmt -check -recursive
-terraform -chdir=infra init -backend=false -lockfile=readonly
-terraform -chdir=bootstrap init -backend=false -lockfile=readonly
-terraform -chdir=infra validate
-terraform -chdir=bootstrap validate
-terraform -chdir=infra test
-python -m unittest discover -s tests -v
-tfsec infra --minimum-severity HIGH
-tfsec bootstrap --minimum-severity HIGH
+make tools
+make validate
+make compose-up
+make compose-check
+make compose-down
+make gitops-up
+make gitops-check
+make gitops-down
 ```
 
-Terraform tests use a mocked AWS provider and do not create cloud resources. They test generated plans and security invariants, not live AWS behavior.
+Run from the repository root. `make tools` installs SHA256-verified tools in `.local/bin` and dependencies in `.local/venv`; both are ignored by Git. GitOps follows this repository's `main` branch. Forks must change the repository allowlist and Application source URL together.
 
-## Deploy and clean up
+For standalone Compose use the loopback app port 8080; GitOps mode uses 8081. Metrics, dashboards, traces and logs are also bound only to loopback. See the runbook for local access commands. No cloud resources are provisioned by these targets.
 
-Read the [deployment runbook](docs/runbook.md) and [design decisions](docs/decisions.md) before provisioning. Obtain explicit approval for AWS costs, use temporary credentials, and review every plan. The GitHub repository stores the project; `.gitlab-ci.yml` runs only after importing or mirroring it into a GitLab project.
+## Checks and evidence
 
-Estimated us-east-1 cost: approximately $0.018/hour or $12–13/month continuously, plus state storage, requests and data transfer; pricing, credits and taxes vary. Terminating EC2 does not delete the versioned state bucket. See [cost details](docs/costs.md) and the runbook for complete cleanup.
+The application workflow builds the actual image, checks HTTP behavior and exported metrics/traces/logs/alerts, verifies ArgoCD reconciliation, scans the image and generates an SPDX SBOM. A separate trusted-main job signs and verifies an image manifest through GitHub OIDC and Sigstore, then checks that tampering is rejected. Small evidence artifacts expire after one day; persistent outcomes are summarized in the documentation and run logs.
+
+The Terraform workflow remains credential-free and uses mocked AWS providers. Live AWS deployment, live GitLab execution and OpenTofu compatibility are not claimed. Documentation distinguishes verified runs from pending or unavailable checks.
+
+## Source assignments
+
+| Project | Implementation |
+|---|---|
+| [26: Terraform + GitLab CI/CD on AWS](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-26-terraform-gitlab-cicd) | Preserved Terraform modules, S3/DynamoDB backend and GitLab pipeline |
+| [50: ArgoCD GitOps Home Lab](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-50-argocd-gitops-home-lab) | Kind, ArgoCD Core, sync and replica drift recovery |
+| [51: OpenTelemetry Observability Home Lab](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-51-opentelemetry-observability-home-lab) | One app, OTLP traces/logs, Prometheus, Tempo, Loki and Grafana |
+| [53: Supply Chain Security Lab](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-53-supply-chain-security-lab) | Trivy, Syft SPDX SBOM and Cosign keyless signed image manifest |
+
+This is a local learning platform. Anonymous read-only Grafana access, intentional error endpoints and ephemeral telemetry storage are deliberate lab choices, not production recommendations. Paid AWS deployment is outside the default workflow.
