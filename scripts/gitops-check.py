@@ -23,9 +23,15 @@ def wait_for(name, predicate, timeout=300):
     raise RuntimeError(name + ' timed out')
 
 def app_status():
-    return json.loads(kubectl('-n', 'argocd', 'get', 'application', 'portfolio', '-o', 'json'))['status']
+    return json.loads(kubectl('-n', 'argocd', 'get', 'application', 'portfolio', '-o', 'json' )).get('status', {})
 
-wait_for('ArgoCD Synced and Healthy', lambda: app_status().get('sync', {}).get('status') == 'Synced' and app_status().get('health', {}).get('status') == 'Healthy')
+def ready():
+    state = app_status()
+    expected = os.environ.get('GITOPS_REVISION')
+    sync = state.get('sync', {})
+    return sync.get('status') == 'Synced' and state.get('health', {}).get('status') == 'Healthy' and (not expected or sync.get('revision') == expected)
+
+wait_for('ArgoCD Synced and Healthy at the selected revision', ready)
 # Mutate exactly the deployment created for this lab, then wait for GitOps healing.
 kubectl('-n', 'portfolio', 'scale', 'deployment/portfolio-api', '--replicas=2')
 wait_for('replica drift healed to one', lambda: json.loads(kubectl('-n', 'portfolio', 'get', 'deployment', 'portfolio-api', '-o', 'json'))['spec']['replicas'] == 1)
