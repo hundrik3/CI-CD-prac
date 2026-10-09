@@ -33,3 +33,7 @@ The first application run passed installation, API tests, Compose end-to-end che
 [Run 37601631088](https://github.com/hundrik3/CI-CD-prac/actions/runs/37601631088) completed with success for commit `f28bf350518833a901352a8455a60c94ec812bf1`. Actual logs confirmed 4 API tests and 3 pipeline-control tests, both Compose and Kubernetes telemetry checks, Synced/Healthy at the selected source revision, replica self-healing, an unsuppressed Trivy gate, SBOM generation and cleanup. The separate attest job printed `Verified OK` and rejected changed content with `invalid signature`. Signing records use one-day artifact retention; the persistent excerpts retain the outcome without any private key or token.
 
 The preserved [Terraform workflow](https://github.com/hundrik3/CI-CD-prac/actions/runs/37601630955) also succeeded for f28bf35. Superseded release-exercise application runs were cancelled by the configured concurrency policy and are not counted as passes. Documentation-only commits do not rerun the full platform job; runtime and CI input changes do.
+
+## Project 54 extension
+
+The integrated progressive-delivery extension passed locally and on a fresh GitHub runner at runtime source `4904ad4`. See [its validation report](progressive-delivery-validation.md) for measured canary results, expected candidate rejection, cleanup, the initial Bake failure and corrected successful hosted run. The earlier results above retain their original scope and dates.

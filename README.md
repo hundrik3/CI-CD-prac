@@ -5,7 +5,7 @@
 
 A local DevOps portfolio platform that connects a Python API, Docker, Kubernetes/ArgoCD, OpenTelemetry observability, progressive delivery and supply-chain verification. It runs without AWS, a paid cluster or permanent access keys. The existing Terraform/GitLab AWS lab remains available as a separate, optional infrastructure exercise.
 
-**Verified:** [fresh GitHub-hosted end-to-end run](https://github.com/hundrik3/CI-CD-prac/actions/runs/37601631088) passed, including GitOps recovery, real telemetry, vulnerability checks and keyless signature verification. Local Git promotion to v2 and revert to v1 were also verified. [Project 54 local validation](docs/progressive-delivery-validation.md) passed canary promotion, manual and metric-based abort, zero-traffic rejection and complete cleanup.
+**Verified:** [fresh GitHub-hosted end-to-end run](https://github.com/hundrik3/CI-CD-prac/actions/runs/37914162725) passed, including GitOps recovery, real telemetry, canary promotion/abort, vulnerability checks and keyless signature verification. Local Git promotion to v2 and revert to v1 were also verified. [Project 54 local validation](docs/progressive-delivery-validation.md) passed canary promotion, manual and metric-based abort, zero-traffic rejection and complete cleanup.
 
 ## What to inspect
 

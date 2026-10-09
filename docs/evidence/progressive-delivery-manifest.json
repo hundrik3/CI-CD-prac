@@ -1,0 +1,9 @@
+{
+  "schema": "portfolio-image-manifest/v1",
+  "source_commit": "4904ad48e1399f01c9b419f8fa770a75032b136f",
+  "image": "portfolio-api:v1",
+  "image_id": "sha256:57fb858cc0c7f8da62c7ba0e57630948e33c78eada75ecf490723bec5f38a859",
+  "archive_sha256": "7c35d19ddd08afbf3505828dd94a264836321a2fc5dbfbc02dfd4c0c937de78b",
+  "sbom_sha256": "c12d17915580d6167533907e331ad598d5c4234cd13f5b593b75c6677d3a132f",
+  "scan_sha256": "2652f3562a6a243870698203a004db167e05d01c29c3732df96e2286edf4e6e5"
+}

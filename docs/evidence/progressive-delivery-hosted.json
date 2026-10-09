@@ -1,0 +1,407 @@
+{
+  "timestamp_utc": "2026-10-09T09:56:35.661330+00:00",
+  "checks": [
+    {
+      "name": "20% pause",
+      "phase": "Paused",
+      "step": 1,
+      "stable_hash": "5c8f748666",
+      "current_hash": "6d5b6968bb",
+      "service_selectors": {
+        "release-stable": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "5c8f748666"
+        },
+        "release-canary": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-api": {
+          "app": "release-api"
+        }
+      },
+      "replica_sets": [
+        {
+          "name": "release-api-5c8f748666",
+          "desired": 4,
+          "ready": 4
+        },
+        {
+          "name": "release-api-6d5b6968bb",
+          "desired": 1,
+          "ready": 1
+        }
+      ]
+    },
+    {
+      "name": "60% pause after successful analysis",
+      "phase": "Paused",
+      "step": 4,
+      "stable_hash": "5c8f748666",
+      "current_hash": "6d5b6968bb",
+      "service_selectors": {
+        "release-stable": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "5c8f748666"
+        },
+        "release-canary": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-api": {
+          "app": "release-api"
+        }
+      },
+      "replica_sets": [
+        {
+          "name": "release-api-5c8f748666",
+          "desired": 2,
+          "ready": 2
+        },
+        {
+          "name": "release-api-6d5b6968bb",
+          "desired": 3,
+          "ready": 3
+        }
+      ]
+    },
+    {
+      "name": "v2 stable",
+      "phase": "Healthy",
+      "step": 6,
+      "stable_hash": "6d5b6968bb",
+      "current_hash": "6d5b6968bb",
+      "service_selectors": {
+        "release-stable": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-canary": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-api": {
+          "app": "release-api"
+        }
+      },
+      "replica_sets": [
+        {
+          "name": "release-api-5c8f748666",
+          "desired": 0,
+          "ready": 0
+        },
+        {
+          "name": "release-api-6d5b6968bb",
+          "desired": 5,
+          "ready": 5
+        }
+      ]
+    },
+    {
+      "name": "manual abort",
+      "phase": "Degraded",
+      "step": 0,
+      "stable_hash": "6d5b6968bb",
+      "current_hash": "6fcc7bb576",
+      "service_selectors": {
+        "release-stable": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-canary": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-api": {
+          "app": "release-api"
+        }
+      },
+      "replica_sets": [
+        {
+          "name": "release-api-5c8f748666",
+          "desired": 0,
+          "ready": 0
+        },
+        {
+          "name": "release-api-6d5b6968bb",
+          "desired": 5,
+          "ready": 5
+        },
+        {
+          "name": "release-api-6fcc7bb576",
+          "desired": 0,
+          "ready": 0
+        }
+      ]
+    },
+    {
+      "name": "automatic abort protects stable v2",
+      "phase": "Degraded",
+      "step": 0,
+      "stable_hash": "6d5b6968bb",
+      "current_hash": "68d59b94c9",
+      "service_selectors": {
+        "release-stable": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-canary": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-api": {
+          "app": "release-api"
+        }
+      },
+      "replica_sets": [
+        {
+          "name": "release-api-5c8f748666",
+          "desired": 0,
+          "ready": 0
+        },
+        {
+          "name": "release-api-68d59b94c9",
+          "desired": 0,
+          "ready": 0
+        },
+        {
+          "name": "release-api-6d5b6968bb",
+          "desired": 5,
+          "ready": 5
+        },
+        {
+          "name": "release-api-6fcc7bb576",
+          "desired": 0,
+          "ready": 0
+        }
+      ]
+    },
+    {
+      "name": "no traffic rejected",
+      "phase": "Degraded",
+      "step": 0,
+      "stable_hash": "6d5b6968bb",
+      "current_hash": "7b648f469b",
+      "service_selectors": {
+        "release-stable": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-canary": {
+          "app": "release-api",
+          "rollouts-pod-template-hash": "6d5b6968bb"
+        },
+        "release-api": {
+          "app": "release-api"
+        }
+      },
+      "replica_sets": [
+        {
+          "name": "release-api-5c8f748666",
+          "desired": 0,
+          "ready": 0
+        },
+        {
+          "name": "release-api-68d59b94c9",
+          "desired": 0,
+          "ready": 0
+        },
+        {
+          "name": "release-api-6d5b6968bb",
+          "desired": 5,
+          "ready": 4
+        },
+        {
+          "name": "release-api-6fcc7bb576",
+          "desired": 0,
+          "ready": 0
+        },
+        {
+          "name": "release-api-7b648f469b",
+          "desired": 1,
+          "ready": 1
+        }
+      ]
+    }
+  ],
+  "mixed_service_sample": {
+    "v1": 84,
+    "v2": 16
+  },
+  "successful_analysis": {
+    "completedAt": "2026-10-09T09:57:33Z",
+    "dryRunSummary": {},
+    "metricResults": [
+      {
+        "consecutiveSuccess": 3,
+        "count": 3,
+        "measurements": [
+          {
+            "finishedAt": "2026-10-09T09:57:23Z",
+            "phase": "Successful",
+            "startedAt": "2026-10-09T09:57:23Z",
+            "value": "[1]"
+          },
+          {
+            "finishedAt": "2026-10-09T09:57:28Z",
+            "phase": "Successful",
+            "startedAt": "2026-10-09T09:57:28Z",
+            "value": "[1]"
+          },
+          {
+            "finishedAt": "2026-10-09T09:57:33Z",
+            "phase": "Successful",
+            "startedAt": "2026-10-09T09:57:33Z",
+            "value": "[1]"
+          }
+        ],
+        "metadata": {
+          "ResolvedPrometheusQuery": "(sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\",status=\"200\"}) or vector(0)) / clamp_min(sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\"}) or vector(0), 1)"
+        },
+        "name": "success-ratio",
+        "phase": "Successful",
+        "successful": 3
+      },
+      {
+        "consecutiveSuccess": 3,
+        "count": 3,
+        "measurements": [
+          {
+            "finishedAt": "2026-10-09T09:57:23Z",
+            "phase": "Successful",
+            "startedAt": "2026-10-09T09:57:23Z",
+            "value": "[210]"
+          },
+          {
+            "finishedAt": "2026-10-09T09:57:28Z",
+            "phase": "Successful",
+            "startedAt": "2026-10-09T09:57:28Z",
+            "value": "[259]"
+          },
+          {
+            "finishedAt": "2026-10-09T09:57:33Z",
+            "phase": "Successful",
+            "startedAt": "2026-10-09T09:57:33Z",
+            "value": "[308]"
+          }
+        ],
+        "metadata": {
+          "ResolvedPrometheusQuery": "sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\"}) or vector(0)"
+        },
+        "name": "sample-count",
+        "phase": "Successful",
+        "successful": 3
+      }
+    ],
+    "phase": "Successful",
+    "runSummary": {
+      "count": 2,
+      "successful": 2
+    },
+    "startedAt": "2026-10-09T09:57:13Z"
+  },
+  "failed_analysis": {
+    "completedAt": "2026-10-09T09:59:33Z",
+    "dryRunSummary": {},
+    "message": "Metric \"success-ratio\" assessed Failed due to failed (1) > failureLimit (0)",
+    "metricResults": [
+      {
+        "consecutiveSuccess": 1,
+        "count": 1,
+        "measurements": [
+          {
+            "finishedAt": "2026-10-09T09:59:33Z",
+            "phase": "Successful",
+            "startedAt": "2026-10-09T09:59:33Z",
+            "value": "[207]"
+          }
+        ],
+        "metadata": {
+          "ResolvedPrometheusQuery": "sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\"}) or vector(0)"
+        },
+        "name": "sample-count",
+        "phase": "Successful",
+        "successful": 1
+      },
+      {
+        "count": 1,
+        "failed": 1,
+        "measurements": [
+          {
+            "finishedAt": "2026-10-09T09:59:33Z",
+            "phase": "Failed",
+            "startedAt": "2026-10-09T09:59:33Z",
+            "value": "[0]"
+          }
+        ],
+        "metadata": {
+          "ResolvedPrometheusQuery": "(sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\",status=\"200\"}) or vector(0)) / clamp_min(sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\"}) or vector(0), 1)"
+        },
+        "name": "success-ratio",
+        "phase": "Failed"
+      }
+    ],
+    "phase": "Failed",
+    "runSummary": {
+      "count": 2,
+      "failed": 1,
+      "successful": 1
+    },
+    "startedAt": "2026-10-09T09:59:23Z"
+  },
+  "no_traffic_analysis": {
+    "completedAt": "2026-10-09T10:00:22Z",
+    "dryRunSummary": {},
+    "message": "Metric \"sample-count\" assessed Failed due to failed (1) > failureLimit (0)",
+    "metricResults": [
+      {
+        "count": 1,
+        "failed": 1,
+        "measurements": [
+          {
+            "finishedAt": "2026-10-09T10:00:22Z",
+            "phase": "Failed",
+            "startedAt": "2026-10-09T10:00:22Z",
+            "value": "[0]"
+          }
+        ],
+        "metadata": {
+          "ResolvedPrometheusQuery": "(sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\",status=\"200\"}) or vector(0)) / clamp_min(sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\"}) or vector(0), 1)"
+        },
+        "name": "success-ratio",
+        "phase": "Failed"
+      },
+      {
+        "count": 1,
+        "failed": 1,
+        "measurements": [
+          {
+            "finishedAt": "2026-10-09T10:00:22Z",
+            "phase": "Failed",
+            "startedAt": "2026-10-09T10:00:22Z",
+            "value": "[0]"
+          }
+        ],
+        "metadata": {
+          "ResolvedPrometheusQuery": "sum(portfolio_requests_total{job=\"release-canary\",route=\"/work\"}) or vector(0)"
+        },
+        "name": "sample-count",
+        "phase": "Failed"
+      }
+    ],
+    "phase": "Failed",
+    "runSummary": {
+      "count": 2,
+      "failed": 2
+    },
+    "startedAt": "2026-10-09T10:00:12Z"
+  },
+  "baseline_restored": true,
+  "hosted_run": {
+    "url": "https://github.com/hundrik3/CI-CD-prac/actions/runs/37914162725",
+    "source_commit": "4904ad48e1399f01c9b419f8fa770a75032b136f",
+    "application_job": "success",
+    "attest_job": "success",
+    "cleanup_step": "success"
+  }
+}

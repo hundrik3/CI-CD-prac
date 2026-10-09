@@ -38,7 +38,23 @@ Candidate analysis failures are expected safety outcomes and were explicitly che
 
 The application workflow has been extended to run Project 54 after its existing GitOps checks and to upload the resulting evidence. The first hosted run [37913799484](https://github.com/hundrik3/CI-CD-prac/actions/runs/37913799484) failed before Project 54 executed: the updated runner's Docker Buildx Bake refused reading `/etc/ssl/certs/ca-certificates.crt` outside the project directory. Unit/render checks and cleanup passed; image scanning, GitOps, Rollouts and signing were skipped. This run is not claimed as successful.
 
-The build helper now copies the public system CA bundle into ignored `.local/build-ca.pem` before building and supplies it through the existing BuildKit secret mount. This retains TLS verification and keeps the CA out of image layers, while allowing Bake to read only the project-local file. A local `COMPOSE_BAKE=true make compose-up` completed using the actual Bake backend, followed by all nine `make compose-check` checks and successful targeted cleanup. Hosted revalidation is pending.
+The build helper now copies the public system CA bundle into ignored `.local/build-ca.pem` before building and supplies it through the existing BuildKit secret mount. This retains TLS verification and keeps the CA out of image layers, while allowing Bake to read only the project-local file. A local `COMPOSE_BAKE=true make compose-up` completed using the actual Bake backend, followed by all nine `make compose-check` checks and successful targeted cleanup. The corrected hosted run [37914162725](https://github.com/hundrik3/CI-CD-prac/actions/runs/37914162725) completed **successfully** for source commit `4904ad48e1399f01c9b419f8fa770a75032b136f`. Both `application` and `attest` jobs passed; the preserved Terraform run [37914162775](https://github.com/hundrik3/CI-CD-prac/actions/runs/37914162775) also passed.
+
+The application job executed the five API and three pipeline tests, standalone observability, an unsuppressed image scan, SPDX SBOM, fresh Kind/ArgoCD checks and the complete Project 54 exercise, then successfully cleaned up the cluster and telemetry containers. The signing job verified the exact workflow OIDC identity and rejected an altered manifest with an invalid-signature error.
+
+Actual downloaded [hosted evidence](evidence/progressive-delivery-hosted.json) records a shared-Service sample of 84 v1 and 16 v2 responses out of 100; good-candidate success ratios were 1.0 with volumes 210, 259 and 308. The broken candidate measured ratio 0.0 and was aborted; the no-traffic candidate measured volume 0 and failed closed. The [hosted log excerpt](evidence/progressive-delivery-hosted-checks.txt) retains actual checker output and signature verification/rejection messages.
+
+Downloaded CI security artifacts contained zero HIGH/CRITICAL vulnerability findings, zero secret findings and 78 SBOM packages. Their scan/SBOM file SHA256 values matched the signed manifest. The downloaded public manifest was additionally verified locally with Cosign: `Verified OK`. The [unchanged manifest](evidence/progressive-delivery-manifest.json) and [public Sigstore bundle](evidence/progressive-delivery-manifest.sigstore.json) are retained for durable signature verification; they contain no private signing key. Full CI reports remain downloadable as short-lived run artifacts.
+
+```sh
+.local/bin/cosign verify-blob \
+  --bundle docs/evidence/progressive-delivery-manifest.sigstore.json \
+  --certificate-identity https://github.com/hundrik3/CI-CD-prac/.github/workflows/application.yml@refs/heads/main \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  docs/evidence/progressive-delivery-manifest.json
+```
+
+These records validate the runtime code at `4904ad4`; subsequent documentation-only commits do not rerun the full platform workflow because of its path filters. No production deployment or exact routing guarantee is inferred from this result.
 
 ## Limits
 

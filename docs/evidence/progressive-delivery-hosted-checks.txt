@@ -1,0 +1,52 @@
+GitHub Actions run 37914162725
+Source commit 4904ad48e1399f01c9b419f8fa770a75032b136f
+Both application and attest jobs succeeded.
+
+2026-10-09T09:53:48.9483238Z Ran 5 tests in 0.146s
+2026-10-09T09:53:49.0629011Z Ran 3 tests in 0.005s
+2026-10-09T09:54:14.9642555Z app health: PASS
+2026-10-09T09:54:22.9859778Z fresh error metric baseline: PASS
+2026-10-09T09:54:27.1565801Z request metrics: PASS
+2026-10-09T09:54:27.1657355Z trace lookup: PASS
+2026-10-09T09:54:27.1762653Z correlated logs: PASS
+2026-10-09T09:54:31.1803460Z firing error alert: PASS
+2026-10-09T09:54:31.1971272Z provisioned Grafana dashboard: PASS
+2026-10-09T09:54:31.1974549Z All functional observability checks passed.
+2026-10-09T09:56:16.4641908Z ArgoCD Synced and Healthy at the selected revision: PASS
+2026-10-09T09:56:19.6471627Z replica drift healed to one: PASS
+2026-10-09T09:56:19.7919359Z app health: PASS
+2026-10-09T09:56:21.8044480Z fresh error metric baseline: PASS
+2026-10-09T09:56:25.9759375Z request metrics: PASS
+2026-10-09T09:56:27.9851821Z trace lookup: PASS
+2026-10-09T09:56:27.9987583Z correlated logs: PASS
+2026-10-09T09:56:28.0001941Z firing error alert: PASS
+2026-10-09T09:56:28.0172667Z provisioned Grafana dashboard: PASS
+2026-10-09T09:56:28.0176091Z All functional observability checks passed.
+2026-10-09T09:56:48.1049234Z PASS: initial v1 fully available
+2026-10-09T09:57:01.0534448Z PASS: canary paused at 20% for v2
+2026-10-09T09:57:01.0568702Z PASS: stable v1 and candidate v2 endpoints
+2026-10-09T09:57:01.4363806Z PASS: shared service reaches both versions after endpoint convergence
+2026-10-09T09:57:58.7957147Z PASS: quality analysis passed and canary paused at 60%
+2026-10-09T09:58:31.0303252Z PASS: v2 promoted to stable
+2026-10-09T09:58:44.2812704Z PASS: canary paused at 20% for v3-manual
+2026-10-09T09:58:44.2834222Z PASS: manual candidate reachable
+2026-10-09T09:58:44.4974747Z PASS: manual abort restores v2 service
+2026-10-09T09:58:58.0623545Z PASS: manual abort removes candidate replicas
+2026-10-09T09:58:58.1037496Z PASS: shared service exclusively returns stable v2
+2026-10-09T09:58:58.4848973Z PASS: desired state restored after manual abort
+2026-10-09T09:59:11.4174358Z PASS: canary paused at 20% for v-broken
+2026-10-09T09:59:11.4189620Z PASS: broken candidate returns real HTTP 500
+2026-10-09T09:59:33.8632063Z PASS: failed quality analysis automatically aborts candidate
+2026-10-09T09:59:33.9833892Z PASS: stable v2 remains healthy after automatic abort
+2026-10-09T09:59:47.1918981Z PASS: automatic abort removes candidate replicas
+2026-10-09T09:59:47.2339260Z PASS: shared service exclusively returns stable v2
+2026-10-09T09:59:47.6287609Z PASS: stable template restored before no-traffic test
+2026-10-09T10:00:00.5827970Z PASS: canary paused at 20% for v-no-traffic
+2026-10-09T10:00:00.5847003Z PASS: no-traffic candidate reachable
+2026-10-09T10:00:23.0217215Z PASS: zero business traffic fails closed
+2026-10-09T10:01:36.2914570Z PASS: baseline v1 restored
+2026-10-09T10:01:36.2924460Z PASS: promotion, manual abort, automatic metric-based abort; baseline restored
+2026-10-09T10:01:55.4370729Z Verified OK
+2026-10-09T10:01:55.6702284Z Error: failed to verify signature: could not verify message: invalid signature when validating ASN.1 encoded signature
+2026-10-09T10:01:55.6703867Z PASS: tampered manifest rejected
+2026-10-09T10:01:55.6706550Z error during command execution: failed to verify signature: could not verify message: invalid signature when validating ASN.1 encoded signature
