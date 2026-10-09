@@ -18,6 +18,8 @@ unit:
 validate: unit
 	docker compose config --quiet
 	kubectl kustomize deploy/overlays/local > /dev/null
+	python -c 'from pathlib import Path; import yaml; [list(yaml.safe_load_all(p.read_text())) for p in Path("platform/rollouts").glob("*.yaml")]'
+	docker compose -f compose.yaml -f compose.gitops.yaml -f compose.rollouts.yaml config --quiet
 
 compose-up:
 	chmod -R a+rX observability
@@ -50,3 +52,16 @@ scan:
 sbom:
 	mkdir -p .local
 	syft portfolio-api:v1 -o spdx-json=.local/sbom.spdx.json
+
+.PHONY: rollouts-up rollouts-check rollouts-down
+rollouts-up:
+	python scripts/rollouts-up.py
+
+rollouts-check:
+	python scripts/rollouts-check.py
+
+# Remove only this optional lab; keep the existing platform available.
+rollouts-down:
+	@test "$$(KUBECONFIG=$(CURDIR)/.local/kubeconfig kubectl config current-context)" = kind-portfolio
+	KUBECONFIG=$(CURDIR)/.local/kubeconfig kubectl delete namespace progressive-delivery argo-rollouts --ignore-not-found
+	docker compose -f compose.yaml -f compose.gitops.yaml up -d --remove-orphans

@@ -75,6 +75,8 @@ def create_app():
             return jsonify(error="delay_ms must be an integer"), 400
         if not 0 <= delay <= 2000:
             return jsonify(error="delay_ms must be between 0 and 2000"), 400
+        if os.getenv("APP_FAIL_WORK", "false").lower() == "true":
+            return jsonify(error="Injected canary business failure"), 500
         with trace.get_tracer(__name__).start_as_current_span("simulate-work"):
             time.sleep(delay / 1000)
         return jsonify(delay_ms=delay, result="completed")

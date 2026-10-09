@@ -1,0 +1,9 @@
+# Optional progressive-delivery metrics; use together with compose.gitops.yaml.
+services:
+  prometheus:
+    networks: [default, kind]
+    volumes:
+      - ./platform/rollouts/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+    environment:
+      NO_PROXY: "portfolio-control-plane,otel-collector,localhost,127.0.0.1"
+      no_proxy: "portfolio-control-plane,otel-collector,localhost,127.0.0.1"

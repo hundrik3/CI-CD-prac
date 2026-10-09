@@ -1,0 +1,25 @@
+python scripts/rollouts-check.py
+PASS: initial v1 fully available
+PASS: canary paused at 20% for v2
+PASS: stable v1 and candidate v2 endpoints
+PASS: shared service reaches both versions after endpoint convergence
+PASS: quality analysis passed and canary paused at 60%
+PASS: v2 promoted to stable
+PASS: canary paused at 20% for v3-manual
+PASS: manual candidate reachable
+PASS: manual abort restores v2 service
+PASS: manual abort removes candidate replicas
+PASS: shared service exclusively returns stable v2
+PASS: desired state restored after manual abort
+PASS: canary paused at 20% for v-broken
+PASS: broken candidate returns real HTTP 500
+PASS: failed quality analysis automatically aborts candidate
+PASS: stable v2 remains healthy after automatic abort
+PASS: automatic abort removes candidate replicas
+PASS: shared service exclusively returns stable v2
+PASS: stable template restored before no-traffic test
+PASS: canary paused at 20% for v-no-traffic
+PASS: no-traffic candidate reachable
+PASS: zero business traffic fails closed
+PASS: baseline v1 restored
+PASS: promotion, manual abort, automatic metric-based abort; baseline restored

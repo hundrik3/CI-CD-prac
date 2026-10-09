@@ -3,13 +3,14 @@
 [![Application and local platform](https://github.com/hundrik3/CI-CD-prac/actions/workflows/application.yml/badge.svg)](https://github.com/hundrik3/CI-CD-prac/actions/workflows/application.yml)
 [![Terraform checks](https://github.com/hundrik3/CI-CD-prac/actions/workflows/validate.yml/badge.svg)](https://github.com/hundrik3/CI-CD-prac/actions/workflows/validate.yml)
 
-A local DevOps portfolio platform that connects a Python API, Docker, Kubernetes/ArgoCD, OpenTelemetry observability and supply-chain verification. It runs without AWS, a paid cluster or permanent access keys. The existing Terraform/GitLab AWS lab remains available as a separate, optional infrastructure exercise.
+A local DevOps portfolio platform that connects a Python API, Docker, Kubernetes/ArgoCD, OpenTelemetry observability, progressive delivery and supply-chain verification. It runs without AWS, a paid cluster or permanent access keys. The existing Terraform/GitLab AWS lab remains available as a separate, optional infrastructure exercise.
 
-**Verified:** [fresh GitHub-hosted end-to-end run](https://github.com/hundrik3/CI-CD-prac/actions/runs/37601631088) passed, including GitOps recovery, real telemetry, vulnerability checks and keyless signature verification. Local Git promotion to v2 and revert to v1 were also verified.
+**Verified:** [fresh GitHub-hosted end-to-end run](https://github.com/hundrik3/CI-CD-prac/actions/runs/37601631088) passed, including GitOps recovery, real telemetry, vulnerability checks and keyless signature verification. Local Git promotion to v2 and revert to v1 were also verified. [Project 54 local validation](docs/progressive-delivery-validation.md) passed canary promotion, manual and metric-based abort, zero-traffic rejection and complete cleanup.
 
 ## What to inspect
 
 - [Architecture and decisions](docs/architecture.md): how the components connect and why.
+- [Progressive delivery](docs/progressive-delivery.md): Project 54 canary steps, real Prometheus gates, promotion and abort.
 - [Code review](docs/code-review.md): corrections and accepted limitations.
 - [Local runbook](docs/local-runbook.md): setup, tests, GitOps, troubleshooting and complete cleanup.
 - [Platform validation](docs/platform-validation.md): actual outcomes, reproducible checks and limits.
@@ -70,6 +71,7 @@ The Terraform workflow remains credential-free and uses mocked AWS providers. Li
 | [26: Terraform + GitLab CI/CD on AWS](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-26-terraform-gitlab-cicd) | Preserved Terraform modules, S3/DynamoDB backend and GitLab pipeline |
 | [50: ArgoCD GitOps Home Lab](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-50-argocd-gitops-home-lab) | Kind, ArgoCD Core, sync and replica drift recovery |
 | [51: OpenTelemetry Observability Home Lab](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-51-opentelemetry-observability-home-lab) | One app, OTLP traces/logs, Prometheus, Tempo, Loki and Grafana |
+| [54: Progressive Delivery Home Lab](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-54-progressive-delivery-home-lab) | Argo Rollouts, 20/60/100% steps, manual promotion/abort and metric-based rejection |
 | [53: Supply Chain Security Lab](https://github.com/DevCloudNinjas/DevOps-Projects/tree/main/project-53-supply-chain-security-lab) | Trivy, Syft SPDX SBOM and Cosign keyless signed image manifest |
 
 This is a local learning platform. Anonymous read-only Grafana access, intentional error endpoints and ephemeral telemetry storage are deliberate lab choices, not production recommendations. Paid AWS deployment is outside the default workflow.

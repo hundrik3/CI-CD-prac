@@ -80,12 +80,23 @@ jobs:
         run: |
           make gitops-up
           make gitops-check
+          make rollouts-up
+          make rollouts-check
+      - name: Upload progressive delivery evidence
+        if: github.event_name != 'pull_request' && success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: progressive-delivery-evidence
+          path: .local/rollouts-evidence.json
+          include-hidden-files: true
+          retention-days: 1
       - name: Collect diagnostics on failure
         if: failure()
         run: |
           docker compose logs --tail=40
           if [ -f .local/kubeconfig ]; then
             kubectl --kubeconfig .local/kubeconfig get pods -A
+            kubectl --kubeconfig .local/kubeconfig -n progressive-delivery get rollouts,analysisruns -o yaml || true
             kubectl --kubeconfig .local/kubeconfig -n argocd get application portfolio -o yaml || true
           fi
       - name: Clean up all local lab resources

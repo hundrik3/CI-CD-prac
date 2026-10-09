@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: canary-quality
+  namespace: progressive-delivery
+spec:
+  metrics:
+  - name: sample-count
+    interval: 5s
+    initialDelay: 10s
+    count: 3
+    failureLimit: 0
+    successCondition: result[0] >= 20
+    provider:
+      prometheus:
+        address: http://prometheus.progressive-delivery.svc:9090
+        query: sum(portfolio_requests_total{job="release-canary",route="/work"}) or
+          vector(0)
+  - name: success-ratio
+    interval: 5s
+    initialDelay: 10s
+    count: 3
+    failureLimit: 0
+    successCondition: result[0] >= 0.99
+    provider:
+      prometheus:
+        address: http://prometheus.progressive-delivery.svc:9090
+        query: (sum(portfolio_requests_total{job="release-canary",route="/work",status="200"})
+          or vector(0)) / clamp_min(sum(portfolio_requests_total{job="release-canary",route="/work"})
+          or vector(0), 1)

@@ -26,3 +26,16 @@ Review date: 2026-10-07. Scope: application, Dockerfile, dependency locks, Compo
 - A successful scan is dated evidence, not a guarantee against future vulnerability database findings.
 
 Live AWS and GitLab cloud jobs remain outside the verified workflow. Terraform's pre-existing documented security exception and medium findings remain visible in validation.md.
+
+## Project 54 extension review (2026-10-09)
+
+- The optional lab uses its own namespace, selector and NodePorts. It does not change the ArgoCD-managed Deployment or reuse its service selectors.
+- Bootstrap checks the dedicated Kind context; controller installation uses a pinned release manifest and verifies its SHA256. The checker and optional teardown also refuse an unexpected context.
+- The candidate remains non-root with a read-only filesystem, dropped capabilities, no service-account token, resource limits and health probes. Deliberate business failure is opt-in through an environment flag and does not weaken readiness to hide the failure.
+- Analysis is scoped to candidate business requests. A minimum request volume prevents absent metrics or zero traffic from becoming a successful release. Real measurement results are captured, and the failed success-ratio gate is explicitly asserted.
+- The first exercise exposed that restoring the v1 template starts another rollout with pauses. Baseline cleanup now explicitly fully promotes the known v1 template; the actual v2 release still passes every analysis and pause. The completed revised checker is the authoritative reproducibility check.
+- Service transitions can briefly have no ready endpoint. The checker retries transport availability while waiting, including full shared-Service samples after replica downscale, without converting failed metrics or failed assertions into passes.
+- Abort restores traffic but leaves the failed desired template. The exercise restores the exact known-good template, verifies candidate replica removal and tests the shared Service after both kinds of abort.
+- Old evidence is deleted at the beginning of a new check, so a failed invocation cannot leave an earlier successful record at the expected output path.
+
+Accepted limits: replica-based weights are approximate; one-candidate Service scraping is sufficient for the inline 20% analysis but not a production multi-pod metrics design. Counters cover an isolated fresh candidate, not a rolling-window SLO. Releases use explicit local template mutations rather than GitOps image promotion. No weighted ingress, production authentication, multi-node availability or production readiness is claimed. The optional namespace teardown leaves cluster-scoped CRDs/RBAC; complete Kind teardown removes them.

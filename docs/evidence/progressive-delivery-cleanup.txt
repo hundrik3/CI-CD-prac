@@ -1,0 +1,55 @@
+python scripts/gitops-check.py
+ArgoCD Synced and Healthy at the selected revision: PASS
+replica drift healed to one: PASS
+deployment "portfolio-api" successfully rolled out
+app health: PASS
+fresh error metric baseline: PASS
+request metrics: PASS
+trace lookup: PASS
+correlated logs: PASS
+firing error alert: PASS
+provisioned Grafana dashboard: PASS
+All functional observability checks passed.
+
+KUBECONFIG=/workspace/CI-CD-prac/.local/kubeconfig kubectl delete namespace progressive-delivery argo-rollouts --ignore-not-found
+namespace "progressive-delivery" deleted
+namespace "argo-rollouts" deleted
+docker compose -f compose.yaml -f compose.gitops.yaml up -d --remove-orphans
+ Container ci-cd-prac-tempo-1  Running
+ Container ci-cd-prac-prometheus-1  Recreate
+ Container ci-cd-prac-loki-1  Running
+ Container ci-cd-prac-otel-collector-1  Running
+ Container ci-cd-prac-grafana-1  Running
+ Container ci-cd-prac-prometheus-1  Recreated
+ Container ci-cd-prac-prometheus-1  Starting
+ Container ci-cd-prac-prometheus-1  Started
+docker compose -f compose.yaml -f compose.gitops.yaml down --volumes --remove-orphans
+ Container ci-cd-prac-grafana-1  Stopping
+ Container ci-cd-prac-prometheus-1  Stopping
+ Container ci-cd-prac-otel-collector-1  Stopping
+ Container ci-cd-prac-prometheus-1  Stopped
+ Container ci-cd-prac-prometheus-1  Removing
+ Container ci-cd-prac-grafana-1  Stopped
+ Container ci-cd-prac-grafana-1  Removing
+ Container ci-cd-prac-prometheus-1  Removed
+ Container ci-cd-prac-otel-collector-1  Stopped
+ Container ci-cd-prac-otel-collector-1  Removing
+ Container ci-cd-prac-otel-collector-1  Removed
+ Container ci-cd-prac-tempo-1  Stopping
+ Container ci-cd-prac-loki-1  Stopping
+ Container ci-cd-prac-grafana-1  Removed
+ Container ci-cd-prac-loki-1  Stopped
+ Container ci-cd-prac-loki-1  Removing
+ Container ci-cd-prac-loki-1  Removed
+ Container ci-cd-prac-tempo-1  Stopped
+ Container ci-cd-prac-tempo-1  Removing
+ Container ci-cd-prac-tempo-1  Removed
+ Network ci-cd-prac_default  Removing
+ Network ci-cd-prac_default  Removed
+kind delete cluster --name portfolio
+Deleting cluster "portfolio" ...
+Deleted nodes: ["portfolio-control-plane"]
+portfolio-kind
+docker compose down --volumes --remove-orphans
+
+Postchecks: no Kind clusters; zero project containers; project networks removed; private kubeconfig removed.

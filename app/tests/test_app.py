@@ -19,6 +19,12 @@ class ApiTests(unittest.TestCase):
         for value in ("-1", "2001", "nope"):
             self.assertEqual(self.client.get("/work?delay_ms=" + value).status_code, 400)
 
+    def test_canary_failure_keeps_readiness_healthy(self):
+        with patch.dict(os.environ, {"APP_FAIL_WORK": "true"}):
+            self.assertEqual(self.client.get("/work?delay_ms=0").status_code, 500)
+            self.assertEqual(self.client.get("/readyz").status_code, 200)
+        self.assertEqual(self.client.get("/work?delay_ms=0").status_code, 200)
+
     def test_error_is_observed(self):
         self.assertEqual(self.client.get("/error").status_code, 500)
         metrics = self.client.get("/metrics").text
