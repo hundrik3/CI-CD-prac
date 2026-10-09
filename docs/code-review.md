@@ -38,4 +38,6 @@ Live AWS and GitLab cloud jobs remain outside the verified workflow. Terraform's
 - Abort restores traffic but leaves the failed desired template. The exercise restores the exact known-good template, verifies candidate replica removal and tests the shared Service after both kinds of abort.
 - Old evidence is deleted at the beginning of a new check, so a failed invocation cannot leave an earlier successful record at the expected output path.
 
+The updated GitHub runner enabled Buildx Bake filesystem checks and rejected a CA secret outside the project directory. Build targets now prepare a public system CA bundle under ignored `.local` and still mount it as a BuildKit secret; TLS and image-layer isolation remain intact.
+
 Accepted limits: replica-based weights are approximate; one-candidate Service scraping is sufficient for the inline 20% analysis but not a production multi-pod metrics design. Counters cover an isolated fresh candidate, not a rolling-window SLO. Releases use explicit local template mutations rather than GitOps image promotion. No weighted ingress, production authentication, multi-node availability or production readiness is claimed. The optional namespace teardown leaves cluster-scoped CRDs/RBAC; complete Kind teardown removes them.

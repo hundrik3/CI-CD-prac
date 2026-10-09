@@ -36,7 +36,9 @@ Candidate analysis failures are expected safety outcomes and were explicitly che
 
 ## Hosted CI
 
-The application workflow has been extended to run Project 54 after its existing GitOps checks and to upload the resulting evidence. Hosted execution for this source change is pending; local success above is not represented as a hosted result.
+The application workflow has been extended to run Project 54 after its existing GitOps checks and to upload the resulting evidence. The first hosted run [37913799484](https://github.com/hundrik3/CI-CD-prac/actions/runs/37913799484) failed before Project 54 executed: the updated runner's Docker Buildx Bake refused reading `/etc/ssl/certs/ca-certificates.crt` outside the project directory. Unit/render checks and cleanup passed; image scanning, GitOps, Rollouts and signing were skipped. This run is not claimed as successful.
+
+The build helper now copies the public system CA bundle into ignored `.local/build-ca.pem` before building and supplies it through the existing BuildKit secret mount. This retains TLS verification and keeps the CA out of image layers, while allowing Bake to read only the project-local file. A local `COMPOSE_BAKE=true make compose-up` completed using the actual Bake backend, followed by all nine `make compose-check` checks and successful targeted cleanup. Hosted revalidation is pending.
 
 ## Limits
 

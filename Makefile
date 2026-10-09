@@ -1,6 +1,8 @@
 SHELL := /bin/bash
 TOOLS_DIR ?= $(CURDIR)/.local/bin
 export TOOLS_DIR
+BUILD_CA_BUNDLE ?= $(CURDIR)/.local/build-ca.pem
+export BUILD_CA_BUNDLE
 export PATH := $(CURDIR)/.local/venv/bin:$(TOOLS_DIR):$(PATH)
 export PYTHONPATH := app
 
@@ -21,7 +23,12 @@ validate: unit
 	python -c 'from pathlib import Path; import yaml; [list(yaml.safe_load_all(p.read_text())) for p in Path("platform/rollouts").glob("*.yaml")]'
 	docker compose -f compose.yaml -f compose.gitops.yaml -f compose.rollouts.yaml config --quiet
 
-compose-up:
+.PHONY: prepare-build-ca
+prepare-build-ca:
+	mkdir -p .local
+	@if [ "$(BUILD_CA_BUNDLE)" = "$(CURDIR)/.local/build-ca.pem" ]; then cp /etc/ssl/certs/ca-certificates.crt "$(BUILD_CA_BUNDLE)"; fi
+
+compose-up: prepare-build-ca
 	chmod -R a+rX observability
 	docker compose up -d --build
 
@@ -31,7 +38,7 @@ compose-check:
 compose-down:
 	docker compose down --volumes --remove-orphans
 
-gitops-up:
+gitops-up: prepare-build-ca
 	chmod -R a+rX observability
 	docker compose build app
 	python scripts/gitops-up.py

@@ -75,3 +75,7 @@ docker ps --filter label=com.docker.compose.project=ci-cd-prac
 ```
 
 Only this project's Compose containers/volumes, the named Kind cluster and its dedicated bridge are removed. Cached images and tools may remain for fast rebuilds. Delete `.local` when you no longer need credentials or records; do not remove a live kubeconfig before stopping the cluster. No AWS resource exists to delete in this workflow; optional Terraform cleanup is documented separately in runbook.md.
+
+## Buildx Bake and CA trust
+
+The build targets prepare the public system CA bundle under ignored `.local/build-ca.pem` and mount it through the existing BuildKit `proxy_ca` secret. This supports Bake filesystem checks without granting access outside the checkout, disabling TLS, or copying the CA into image layers. Use the Make targets before invoking Compose builds directly. If overriding `BUILD_CA_BUNDLE`, provide a readable trusted bundle within the project directory.

@@ -78,4 +78,4 @@ services:
     - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
 secrets:
   proxy_ca:
-    file: ${BUILD_CA_BUNDLE:-/etc/ssl/certs/ca-certificates.crt}
+    file: ${BUILD_CA_BUNDLE:-./.local/build-ca.pem}
